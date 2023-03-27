@@ -1,0 +1,54 @@
+.App-container {
+    display: flex;
+    margin-left: 20px;
+    flex-direction: column;
+    color: rgb(255, 255, 255);
+    
+}
+
+.lancamento {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: 'Times New Roman';
+    font-size: 2rem;
+}
+
+.informacao {
+    margin-bottom: 5px;
+}
+
+.register-input {
+    display: inline-block;
+    height: 20px;
+    border-radius: 2px;
+    padding: 2px;
+    margin: 2px;
+    text-align: center;
+}
+
+.descricao {
+    margin-bottom: 15px;
+    text-align: start;
+}
+
+.valor {
+    width: 5rem;
+    margin-bottom: 15px;
+    text-align: start;
+}
+
+.data {
+    width: 5rem;
+    margin-bottom: 15px;
+}
+
+.salvar {
+    display: inline-flex;
+    margin-top: 2px;
+    margin-right: 4px;
+    width: 45px ;
+}
+
+.apagar{
+    width: 45px;
+}
