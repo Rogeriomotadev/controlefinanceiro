@@ -17,9 +17,9 @@ export default function Card(props) {
             setOpen={setOpen} 
             nome={props.name} 
             data={props.date}
-            valor={props.value} 
-            Listfinancas={Listfinancas}
-            setListfinancas={setListfinancas}
+            valor={props.value}
+            listFinancas
+            setListFinancas
             />
         <div className="card-financas" onClick={() => 
         handleClickCard()}>

@@ -4,7 +4,7 @@ import Axios from "axios";
 import Card from "./componentes/cards/cards";
 
 function App() {
-  const [values, setValues] = useState();
+  const [values, setValues] = useState({name: '', date: '', value: ''});
   const [listFinancas, setListFinancas] = useState();
   
   const handleChangeValues = (value) => {
@@ -14,14 +14,17 @@ function App() {
     }));
   };
 
-  const handleClickButton = () => {
-    Axios.post("http://localhost:3001/register", {
-      nome_conta: values.name,
-      data_vencimento: values.date,
-      valor_conta: values.value,
-    }).then((response) => {
-      console.log(response);
-    })
+  const handleClickButton = async () => {
+    try {
+      const result = await Axios.post("http://localhost:3001/register", {
+        nome_conta: values.name,
+        data_vencimento: values.date,
+        valor_conta: values.value,
+      })
+      console.log(result.data)
+    } catch (e) {
+      console.log(e)
+    }
   };
 
   useEffect(()=> {

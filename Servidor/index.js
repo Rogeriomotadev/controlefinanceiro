@@ -1,62 +1,71 @@
-const express = require ("express");
+const express = require("express");
 const app = express();
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 const cors = require("cors");
 
 const db = mysql.createPool({
     host: "localhost",
     user: "root",
-    password: "password",
+    password: "mpo_password",
     database: "financas",
 });
 
 app.use(cors());
 app.use(express.json());
 
-app.post("register", (req, res) =>{
-   const {name} = req.body;
-   const {date} = req.body;
-   const {value} = req.body;
+app.post("/register", async (req, res) => {
+    const {nome_conta, data_vencimento, valor_conta} = req.body;
 
-   let SQL = "INSERT INTO financas (nome_conta, data_vencimento, valor_conta) VALUES ( ?,?,? )"
+    let SQL = "INSERT INTO financas (nome_conta, data_vencimento, valor_conta) VALUES ( ?,?,? )"
 
-    db.query(SQL, [nome_conta, data_vencimento, valor_conta] (error, result));
+    try {
+        await db.query(SQL, [nome_conta, data_vencimento, valor_conta]);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return res.json("Valores inseridos com sucesso XPTO");
 });
 
-app.get("/getCards", (req, res)=> {
+app.get("/getCards", async (req, res) => {
     let SQL = "SELECT *from financas";
 
-    db.query(SQL, (error, result) => {
-        if(error) console.log(error);
-        else res.send(result);
-    });
+    try {
+        const result = await db.query(SQL);
+        return res.json(result);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return res.json([])
 });
 
-app.put("/edit", (req, res) => {
-    const {id} = req.body
-    const {nome_conta} = req.body
-    const {valor_conta} = req.body
-    const {data_vencimento} = req.body;
+app.put("/edit", async (req, res) => {
+    const {id, nome_conta, data_vencimento, valor_conta} = req.body;
 
 
     let SQL = "UPDATE financas SET nome_conta = ?, valor_conta = ?, data_vencimento = ? WHERE idfinancas = ?";
 
-    db.query(SQL, [nome_conta, valor_conta, data_vencimento, id] (error, result) , {
-        if(error) {console.log(error);
-        },else : res.send(result)
-    });
-        
+    try {
+        await db.query(SQL, [nome_conta, valor_conta, data_vencimento, id]);
+    } catch (error) {
+        console.log(error);
+    }
+
+    return res.json("Valores atualizados com sucesso XPTO");
+
 });
 
 app.delete("/dele/:id", (req, res) => {
     const {id} = req.params;
-    let SQL = "DELETE FROM financas WHERE  id =?",
-    db.query (SQL, [id] (error, result) , {
-        if(error) {console.log(error);
-        }, else : res.send(result)
+    let SQL = "DELETE FROM financas WHERE  id =?";
+    db.query(SQL, [id](error, result), {
+        if(error) {
+            console.log(error);
+        }, else: res.send(result)
     });
 });
 
 app.listen(3001, () => {
-    console.log("rodando servidor");
+    console.log("Rodando Servidor");
 });
