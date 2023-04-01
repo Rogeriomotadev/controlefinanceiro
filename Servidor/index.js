@@ -2,16 +2,18 @@ const express = require("express");
 const app = express();
 const mysql = require("mysql2/promise");
 const cors = require("cors");
+const helmet = require("helmet");
 
 const db = mysql.createPool({
-    host: "localhost",
+    host: "127.0.0.1:3306",
     user: "root",
-    password: "mpo_password",
+    password: "Ro105254rio*",
     database: "financas",
 });
 
 app.use(cors());
 app.use(express.json());
+app.use(helmet());
 
 app.post("/register", async (req, res) => {
     const {nome_conta, data_vencimento, valor_conta} = req.body;
@@ -52,17 +54,19 @@ app.put("/edit", async (req, res) => {
         console.log(error);
     }
 
-    return res.json("Valores atualizados com sucesso XPTO");
+    return res.json("Valores atualizados com sucesso");
 
 });
 
 app.delete("/dele/:id", (req, res) => {
     const {id} = req.params;
     let SQL = "DELETE FROM financas WHERE  id =?";
-    db.query(SQL, [id](error, result), {
+    db.query(SQL, [id], (error, result) => {
         if(error) {
             console.log(error);
-        }, else: res.send(result)
+        } else{
+            res.send(result);
+        } 
     });
 });
 

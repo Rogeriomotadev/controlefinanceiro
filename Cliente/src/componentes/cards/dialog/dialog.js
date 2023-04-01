@@ -16,19 +16,33 @@ export default function FormDialog(props) {
     });
 
 
-    const handleEdit = () => {
-        Axios.put("http://localhost:3001/edit", {
+    const handleEdit = async () => {
+        try {
+          await Axios.put("http://localhost:3001/edit", {
             id: editValues.id,
             nome: editValues.nome,
-            value: editValues.value,
+            value: editValues.date,
             date: editValues.value,
-        });
-        handleClose();
-    };
+          });
+          handleClose();
+        } catch (error) {
+          console.log(error);
+          alert("Ocorreu um erro ao editar o item.");
+        }
+      };
 
     const handleDelete = () => {
         Axios.delete(`http://localhost:3001/delete/${editValues.id}`)
-    };
+          .then((response) => {
+            console.log(response);
+            alert('Item deletado com sucesso!');
+            
+          })
+          .catch((error) => {
+            console.log(error);
+            alert('Ocorreu um erro ao deletar o item.');
+          });
+      };
 
     const handleClickOpen = () => {
         props.setOpen(true);
@@ -47,52 +61,45 @@ export default function FormDialog(props) {
     return (
         <Dialog
             open={props.open}
-            onClose={handleClose}
+            onClose={handleClickOpen}
             aria-labelledby="form-dialog-title">
 
             <DialogTitle id="form-dialog-title">Editar</DialogTitle>
             <DialogContent>
                 <TextField
-                    autofocus
                     margin="dense"
-                    id="name"
+                    id="nome"
                     label="Descrição de gastos"
-                    defaultValue={props.name}
+                    defaultValue={props.nome}
                     onChange={handleChangeValues}
                     type="Text"
-                    fullwidth={true}
+                    fullwidth="true"
                 />
                 <TextField
-                    autofocus
                     margin="dense"
-                    id="date"
-                    label="Data de Vencimento"
+                    id="data"
+                    label="Data"
                     defaultValue={props.date}
                     onChange={handleChangeValues}
                     type="Date"
-                    fullwidth={true}
+                    fullwidth="true"
                 />
                 <TextField
-                    autofocus
                     margin="dense"
-                    id="value"
+                    id="valor"
                     label="Valor da conta"
                     defaultValue={props.value}
                     onChange={handleChangeValues}
                     type="Text"
-                    fullwidth={true}
+                    fullwidth="true"
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Cancel
-                </Button>
-                <Button onClick={handleEdit} color="primary">
-                    Salvar
-                </Button>
-                <Button onClick={handleDelete} color="primary">
-                    Excluir
-                </Button>
+                <Button onClick={handleClose} className="Close" type="button" label="Cancelar"> Cancelar </Button>
+
+                <Button onClick={handleEdit} className="Edit" type="button"label="Salvar"> Salvar </Button>
+
+                <Button onClick={handleDelete} className="Delete" type="button"label="Excluir"> Excluir </Button>
             </DialogActions>
         </Dialog>
     )

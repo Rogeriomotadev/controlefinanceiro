@@ -2,7 +2,7 @@
     display: flex;
     margin-left: 20px;
     flex-direction: column;
-    color: rgb(255, 255, 255);
+    color: #0a0000;
     
 }
 
@@ -11,10 +11,6 @@
     margin-bottom: 20px;
     font-family: 'Times New Roman';
     font-size: 2rem;
-}
-
-.informacao {
-    margin-bottom: 5px;
 }
 
 .register-input {
@@ -27,28 +23,38 @@
 }
 
 .descricao {
+    display: flex;
     margin-bottom: 15px;
     text-align: start;
 }
 
 .valor {
+    display: flex;
     width: 5rem;
     margin-bottom: 15px;
     text-align: start;
 }
 
 .data {
-    width: 5rem;
+    display: flex;
+    width: 6rem;
     margin-bottom: 15px;
 }
 
 .salvar {
-    display: inline-flex;
-    margin-top: 2px;
-    margin-right: 4px;
+    text-align: center;
+    font-family: sans-serif;
     width: 45px ;
+    height: 30px;
+    background-color: blue;
+    color: aliceblue;
+    cursor: pointer;
+    border: 1px;
+    border-radius: 2px;
+    margin-bottom: 15px;
+ 
 }
 
-.apagar{
-    width: 45px;
+.financas {
+    font-size: 1em;
 }
