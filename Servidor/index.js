@@ -5,7 +5,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 const db = mysql.createPool({
-    host: "127.0.0.1:3306",
+    host: "localhost",
+    port: 3306,
     user: "root",
     password: "Ro105254rio*",
     database: "financas",
@@ -26,14 +27,14 @@ app.post("/register", async (req, res) => {
         console.log(error);
     }
 
-    return res.json("Valores inseridos com sucesso XPTO");
+    return res.json("Valores inseridos com sucesso.");
 });
 
 app.get("/getCards", async (req, res) => {
-    let SQL = "SELECT *from financas";
+    let SQL = "SELECT * from financas";
 
     try {
-        const result = await db.query(SQL);
+        const [result, _] = await db.query(SQL);
         return res.json(result);
     } catch (error) {
         console.log(error);
@@ -46,7 +47,7 @@ app.put("/edit", async (req, res) => {
     const {id, nome_conta, data_vencimento, valor_conta} = req.body;
 
 
-    let SQL = "UPDATE financas SET nome_conta = ?, valor_conta = ?, data_vencimento = ? WHERE idfinancas = ?";
+    let SQL = "UPDATE financas SET nome_conta = ?, valor_conta = ?, data_vencimento = ? WHERE id = ?";
 
     try {
         await db.query(SQL, [nome_conta, valor_conta, data_vencimento, id]);
@@ -58,7 +59,7 @@ app.put("/edit", async (req, res) => {
 
 });
 
-app.delete("/dele/:id", (req, res) => {
+app.delete("/delete/:id", (req, res) => {
     const {id} = req.params;
     let SQL = "DELETE FROM financas WHERE  id =?";
     db.query(SQL, [id], (error, result) => {

@@ -1,48 +1,46 @@
 import React, {useState} from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
 import Axios from "axios";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 
 export default function FormDialog(props) {
     const [editValues, setEditValues] = useState({
         id: props.id,
         nome: props.nome,
-        value: props.value,
-        date: props.value,
+        value: props.valor,
+        date: props.data,
     });
-
 
     const handleEdit = async () => {
         try {
-          await Axios.put("http://localhost:3001/edit", {
-            id: editValues.id,
-            nome: editValues.nome,
-            value: editValues.date,
-            date: editValues.value,
-          });
-          handleClose();
+            await Axios.put("http://localhost:3001/edit", {
+                id: editValues.id,
+                nome_conta: editValues.nome,
+                valor_conta: editValues.value,
+                data_vencimento: editValues.date,
+            });
+            handleClose();
         } catch (error) {
-          console.log(error);
-          alert("Ocorreu um erro ao editar o item.");
+            console.log(error);
+            alert("Ocorreu um erro ao editar o item.");
         }
-      };
+    };
 
     const handleDelete = () => {
-        Axios.delete(`http://localhost:3001/delete/${editValues.id}`)
-          .then((response) => {
-            console.log(response);
-            alert('Item deletado com sucesso!');
-            
-          })
-          .catch((error) => {
-            console.log(error);
-            alert('Ocorreu um erro ao deletar o item.');
-          });
-      };
+        const confirmation = window.confirm("Deseja realmente excluir o item?");
+
+        if (confirmation) {
+            Axios.delete(`http://localhost:3001/delete/${editValues.id}`)
+                .then((response) => {
+                    console.log(response);
+                    alert('Item deletado com sucesso!');
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert('Ocorreu um erro ao deletar o item.');
+                });
+        }
+    };
 
     const handleClickOpen = () => {
         props.setOpen(true);
@@ -57,6 +55,16 @@ export default function FormDialog(props) {
             [values.target.id]: values.target.value,
         }));
     }
+
+    // Função para formatar a data no formato YYYY-MM-DD
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    };
 
     return (
         <Dialog
@@ -73,33 +81,31 @@ export default function FormDialog(props) {
                     defaultValue={props.nome}
                     onChange={handleChangeValues}
                     type="Text"
-                    fullwidth="true"
+                    fullWidth
                 />
                 <TextField
                     margin="dense"
-                    id="data"
+                    id="date"
                     label="Data"
-                    defaultValue={props.date}
+                    defaultValue={formatDate(props.data)}
                     onChange={handleChangeValues}
-                    type="Date"
-                    fullwidth="true"
+                    type="date"
+                    fullWidth
                 />
                 <TextField
                     margin="dense"
-                    id="valor"
+                    id="value"
                     label="Valor da conta"
-                    defaultValue={props.value}
+                    defaultValue={props.valor}
                     onChange={handleChangeValues}
                     type="Text"
-                    fullwidth="true"
+                    fullWidth
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} className="Close" type="button" label="Cancelar"> Cancelar </Button>
-
-                <Button onClick={handleEdit} className="Edit" type="button"label="Salvar"> Salvar </Button>
-
-                <Button onClick={handleDelete} className="Delete" type="button"label="Excluir"> Excluir </Button>
+                <Button color="secondary" onClick={handleClose}>Cancelar</Button>
+                <Button variant="contained" color="success" onClick={handleEdit}>Salvar</Button>
+                <Button variant="contained" color="error" onClick={handleDelete}>Excluir</Button>
             </DialogActions>
         </Dialog>
     )

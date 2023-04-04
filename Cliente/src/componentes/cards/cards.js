@@ -3,9 +3,7 @@ import "./card.css";
 import FormDialog from "./dialog/dialog";
 
 export default function Card(props) {
-
-    const { nome_conta, data_vencimento, valor_conta } = props;
-
+    const {nome_conta, data_vencimento, valor_conta} = props;
     const [open, setOpen] = React.useState(false);
 
     const handleClickCard = () => {
@@ -14,10 +12,11 @@ export default function Card(props) {
 
     return (
         <div>
-            <FormDialog 
+            <FormDialog
                 open={open}
-                setOpen={setOpen} 
-                nome={props.nome_conta} 
+                setOpen={setOpen}
+                id={props.id}
+                nome={props.nome_conta}
                 data={props.data_vencimento}
                 valor={props.valor_conta}
                 listFinancas={props.listFinancas}
@@ -25,12 +24,12 @@ export default function Card(props) {
             />
 
             <div className="card-financas" onClick={() => handleClickCard()}>
-            <h1 className="card-conta">Descrição: {nome_conta}</h1>
-            <p className="car-data">Data: {data_vencimento}</p>
-            <p className="car-valor"> Valor da Conta: {valor_conta}</p> 
+                <h1 className="card-conta">Descrição: {nome_conta}</h1>
+                <p className="car-data">Data: {data_vencimento}</p>
+                <p className="car-valor"> Valor da Conta: {valor_conta}</p>
             </div>
 
-           
+
         </div>
     );
 }
